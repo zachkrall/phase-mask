@@ -1,0 +1,21 @@
+{
+  "name": "phase-mask",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zachkrall/phase-mask.git"
+  },
+  "keywords": [],
+  "author": "Zach Krall",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zachkrall/phase-mask/issues"
+  },
+  "homepage": "https://github.com/zachkrall/phase-mask#readme"
+}
