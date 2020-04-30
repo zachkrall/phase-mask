@@ -1,0 +1,53 @@
+#toolbar {
+  padding: 1rem;
+  flex-shrink: 0;
+  flex-grow: 0;
+  display: flex;
+  font-size: 0.7em;
+}
+#toolbar button {
+  display: block;
+  background: #fff;
+  color: #000;
+  border-radius: 0.25em;
+  border-width: 0px;
+  padding: 0.4em 0.7em;
+  font-size: inherit;
+
+  appearance: none;
+}
+#toolbar button:hover {
+  display: block;
+  background: #000;
+  color: #fff;
+  border-radius: 0.25em;
+  border-width: 0px;
+  padding: 0.4em 0.7em;
+  font-size: inherit;
+}
+#toolbar button:active {
+  background: #00f;
+}
+
+#toolbar div {
+  color: #fff;
+  font-family: sans-serif;
+  display: block;
+  border-radius: 0.25em;
+  border-width: 0px;
+  padding: 0.4em 0.7em;
+  font-size: inherit;
+}
+
+#toolbar div,
+#toolbar button {
+  margin-right: 1em;
+}
+
+#toolbar div.status--red {
+  background-color: tomato;
+}
+#toolbar div.status--green {
+  background-color: #76ed56;
+  color: #111;
+}

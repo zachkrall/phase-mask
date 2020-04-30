@@ -1,5 +1,0 @@
-/*
-
-  coming soon
-
-*/
