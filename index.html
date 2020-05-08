@@ -15,51 +15,61 @@
         <div :class="`status--white`">Face Visible: {{ faceVisible }}</div>
       </div>
       <textarea id="code-box">
-// eval current block: control + enter
-// eval all: control + shift + enter
+faceObject.material.vertexShader = `
+varying vec2 vUv;
+uniform float u_time;
+uniform float u_amp;
+void main() {
+  vUv = uv;
+  vec3 newPosition = position + vec3(0., 0., sin(u_time + position.x)*u_amp);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+}
+`
 
+faceObject.material.fragmentShader = `
+varying vec2 vUv;
+uniform vec2 u_resolution;
+uniform float u_time;
+void main(){
+  vec2 st = vUv;
+  vec3 color = vec3(st.y);
+  gl_FragColor = vec4(color,1.0);
+}
+`
 
-// you can change vertex shader by evaling this block
-mat.vertexShader = `
-    varying vec2 vUv;
-    uniform float u_time;
-    uniform float u_amp;
+background.material.fragmentShader = `
+varying vec2 vUv;
+uniform sampler2D tDiffuse;
 
-    void main() {
-      vUv = uv;
-      vec3 newPosition = position + vec3(0., 0., sin(u_time + position.x)*u_amp);
-      gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
-    }
-    `
+uniform vec2 u_resolution;
+uniform float u_time;
 
-// you can change fragment shader by evaling this block
-mat.fragmentShader = `
-  uniform vec2 u_resolution;
-  uniform float u_time;
-  void main(){
-    vec2 st = gl_FragCoord.xy/u_resolution;
-    vec3 color = vec3(st.x,sin(u_time),1.);
-    gl_FragColor = vec4(color,1.0);
-  }
-  `
+void main(){
+  vec2 st = gl_FragCoord.xy/u_resolution;
+  vec4 pass = texture2D(tDiffuse, vUv);
+  vec3 background = vec3(1.0, 0.0, 0.0);
 
-// toggle wireframe mode
-mat.wireframe = true
+  background = vec3(st.x, st.y, 1.0);
 
-// change background color
-document.body.style.background = '#000'
+  vec3 color = mix( vec3(pass.r, pass.g, pass.b), background, 1.0-pass.a);
+  gl_FragColor = vec4(color,1.0);
+}
+`
 
-// move scene
-scene.rotation.y = 0.5
+postprocess.material.fragmentShader = `
+varying vec2 vUv;
+uniform sampler2D tDiffuse;
+uniform vec2 u_resolution;
+uniform float u_time;
 
-// get information about a scene
-scene.children.map((child,index)=>`${index} ${child.type}`)
-
-// move camera
-cam.position.set(0,0,-300)
-cam.lookAt(0,0,0)
-</textarea
-      >
+void main(){
+  vec2 st = gl_FragCoord.xy/u_resolution;
+  vec4 pass = texture2D(tDiffuse, vUv);
+  vec3 color = pass.rgb;
+  gl_FragColor = vec4(vec3(1.0)-color,1.0);
+}
+`
+</textarea>
       <div id="repl"></div>
     </div>
 

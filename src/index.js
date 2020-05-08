@@ -12,6 +12,8 @@ import '~/components/Webcam.js'
 import '~/components/Three.js'
 import '~/components/Face.js'
 
+import '~/components/Loop.js'
+import '~/components/Resize.js'
 // GLOBAL COMPONENTS
 
 // mouse

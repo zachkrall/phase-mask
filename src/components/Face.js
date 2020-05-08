@@ -10,8 +10,16 @@ import { TRIANGULATION } from '~/components/triangulation.js'
 
 import * as THREE from 'three'
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js'
+
+import { BasicShader } from '~/shader/config.js'
+
+import Fragment from '~/components/ShaderGenerator.js'
+
+global.faceMaterial = BasicShader
+faceMaterial.uniforms['u_time'].value = time
+faceMaterial.uniforms['u_resolution'].value = new THREE.Vector2(width, height)
+
+global.faceObject = new THREE.Mesh(new THREE.Geometry(), faceMaterial)
 
 global.startFace = async () => {
   tfjsWasm.setWasmPath(
@@ -37,12 +45,9 @@ global.startFace = async () => {
 
   let geo = new THREE.Geometry()
 
-  faces[0].scaledMesh.forEach((vert, index, all) => {
-    let x = vert[0] // - all[5][0]
-    let y = vert[1] // - all[5][1]
-    let z = vert[2] // - all[5][2]
-
-    geo.vertices.push(new THREE.Vector3(x, y, z))
+  faces[0].scaledMesh.forEach(vert => {
+    let position = new THREE.Vector3(vert[0], vert[1], vert[2])
+    geo.vertices.push(position)
   })
 
   for (let i = 0; i < TRIANGULATION.length / 3; i++) {
@@ -88,7 +93,7 @@ global.startFace = async () => {
     geometry.uvsNeedUpdate = true
   }
 
-  global.faceObject = new THREE.Mesh(geo, mat)
+  faceObject = new THREE.Mesh(geo, faceMaterial)
 
   faceObject.geometry.dynamic = true
   faceObject.geometry.verticesNeedUpdate = true
@@ -99,10 +104,11 @@ global.startFace = async () => {
   // // faceObject.geo.computeFaceNormals()
   // // fageo.computeVertexNormals()
   //
-  var axesHelper = new THREE.AxesHelper(500)
-  scene.add(axesHelper)
 
   scene.add(faceObject)
+
+  global.faceFrag = new Fragment(faceObject)
+  faceFrag.gradient('st.x','st.y',1.0).out()
 
   cam.position.set(
     0 - faceObject.geometry.vertices[6].x,

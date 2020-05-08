@@ -29,7 +29,8 @@
   color: #fff !important;
   opacity: 1;
   font-size: inherit;
-  font-family: 'Roboto Mono Light';
+  font-family: 'Roboto Mono';
+  font-weight: 300;
   text-shadow: 1px 1px 0px rgba(0, 0, 0, 1);
 }
 .CodeMirror-linenumber {
@@ -62,7 +63,8 @@
 
 #repl {
   padding: 1rem;
-  font-family: 'Roboto Mono Light';
+  font-family: 'Roboto Mono';
+  font-weight: 300;
   color: #fff;
   opacity: 1;
   text-shadow: 1px 1px 0px rgba(0, 0, 0, 1);
