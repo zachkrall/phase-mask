@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="./dist/style.css" type="text/css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- toolbar -->
+      <div id="toolbar">
+        <button id="run" v-on:click="replEval">Run All</button>
+        <div :class="`status--${camera.class}`">{{ camera.text }}</div>
+        <div :class="`status--${model.class}`">{{ model.text }}</div>
+        <div :class="`status--white`">Face Visible: {{ faceVisible }}</div>
+      </div>
+      <textarea id="code-box">
+faceObject.material.vertexShader = `
+varying vec2 vUv;
+uniform float u_time;
+uniform float u_amp;
+void main() {
+  vUv = uv;
+  vec3 newPosition = position + vec3(0., 0., sin(u_time + position.x)*u_amp);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+}
+`
+
+faceObject.material.fragmentShader = `
+varying vec2 vUv;
+uniform vec2 u_resolution;
+uniform float u_time;
+void main(){
+  vec2 st = vUv;
+  vec3 color = vec3(st.y);
+  gl_FragColor = vec4(color,1.0);
+}
+`
+
+background.material.fragmentShader = `
+varying vec2 vUv;
+uniform sampler2D tDiffuse;
+
+uniform vec2 u_resolution;
+uniform float u_time;
+
+void main(){
+  vec2 st = gl_FragCoord.xy/u_resolution;
+  vec4 pass = texture2D(tDiffuse, vUv);
+  vec3 background = vec3(1.0, 0.0, 0.0);
+
+  background = vec3(st.x, st.y, 1.0);
+
+  vec3 color = mix( vec3(pass.r, pass.g, pass.b), background, 1.0-pass.a);
+  gl_FragColor = vec4(color,1.0);
+}
+`
+
+postprocess.material.fragmentShader = `
+varying vec2 vUv;
+uniform sampler2D tDiffuse;
+uniform vec2 u_resolution;
+uniform float u_time;
+
+void main(){
+  vec2 st = gl_FragCoord.xy/u_resolution;
+  vec4 pass = texture2D(tDiffuse, vUv);
+  vec3 color = pass.rgb;
+  gl_FragColor = vec4(vec3(1.0)-color,1.0);
+}
+`
+</textarea>
+      <div id="repl"></div>
+    </div>
+
+    <script type="text/javascript" src="./dist/bundle.js"></script>
+  </body>
+</html>

@@ -1,6 +1,51 @@
-@import url(https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,300&display=swap);
+<template>
+  <div id="toolbar">
+    <h1>
+      <Logo />
+      Phase Mask
+    </h1>
+    <div>
+      <div
+        :class="
+          state.camera === true ? 'status--green' : 'status--red'
+        "
+      >
+        Camera
+      </div>
+      <div
+        :class="state.mic === true ? 'status--green' : 'status--red'"
+      >
+        Microphone
+      </div>
+      <div
+        :class="state.tfjs === true ? 'status--green' : 'status--red'"
+      >
+        Model
+      </div>
+      <div
+        :class="state.face === true ? 'status--green' : 'status--red'"
+      >
+        Face Visible
+      </div>
+    </div>
+  </div>
+</template>
 
-#toolbar[data-v-021887fb] {
+<script>
+import Logo from '../assets/logo.svg'
+
+export default {
+  components: { Logo },
+  computed: {
+    state() {
+      return this.$store.state
+    }
+  }
+}
+</script>
+
+<style scoped>
+#toolbar {
   position: fixed;
   top: 0.5em;
   left: 0.5em;
@@ -16,12 +61,13 @@
   color: #fff;
   border-radius: 0.25em;
 }
-#toolbar[data-v-021887fb] svg {
+#toolbar >>> svg {
   height: 2em;
   width: 2em;
   margin-right: 0.2em;
 }
-#toolbar h1[data-v-021887fb] {
+
+#toolbar h1 {
   font-size: inherit;
   margin: 0;
   padding: 0;
@@ -30,7 +76,7 @@
   letter-spacing: -0.05em;
   font-weight: 500;
 }
-#toolbar button[data-v-021887fb] {
+#toolbar button {
   display: block;
   background: #fff;
   color: #000;
@@ -41,7 +87,7 @@
 
   appearance: none;
 }
-#toolbar button[data-v-021887fb]:hover {
+#toolbar button:hover {
   display: block;
   background: #000;
   color: #fff;
@@ -50,14 +96,16 @@
   padding: 0.4em 0.7em;
   font-size: inherit;
 }
-#toolbar button[data-v-021887fb]:active {
+#toolbar button:active {
   background: #00f;
 }
-#toolbar div[data-v-021887fb],
-#toolbar button[data-v-021887fb] {
+
+#toolbar div,
+#toolbar button {
   margin-right: 0.25em;
 }
-#toolbar div[class^='status'][data-v-021887fb] {
+
+#toolbar div[class^='status'] {
   color: #fff;
   font-family: sans-serif;
   display: inline-flex;
@@ -67,10 +115,10 @@
   padding: 0.4em 0.5em 0.35em 0.5em;
   font-size: 0.9em;
 }
-#toolbar div.status--red[data-v-021887fb] {
+#toolbar div.status--red {
   color: tomato;
 }
-#toolbar div.status--red[data-v-021887fb]::before {
+#toolbar div.status--red::before {
   width: 5px;
   height: 5px;
   border-radius: 50%;
@@ -79,10 +127,10 @@
   margin-right: 0.25em;
   background-color: tomato;
 }
-#toolbar div.status--green[data-v-021887fb] {
+#toolbar div.status--green {
   color: #76ed56;
 }
-#toolbar div.status--green[data-v-021887fb]::before {
+#toolbar div.status--green::before {
   width: 5px;
   height: 5px;
   border-radius: 50%;
@@ -91,44 +139,4 @@
   margin-right: 0.25em;
   background-color: #76ed56;
 }
-
-*,
-*:before,
-*:after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-html {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
-    sans-serif;
-  font-size: 16px;
-  line-height: 1.2;
-}
-body {
-  min-height: 100vh;
-  background: #111111;
-  color: #f5f5f5;
-
-  background-image: radial-gradient(#333333 0.5px, #111111 0.5px);
-  background-size: calc(28 * 0.5px) calc(28 * 0.5px);
-}
-#grid {
-  opacity: 0.4;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-}
-
-#canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-}
-
+</style>
