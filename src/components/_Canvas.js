@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js'
-import { on } from 'codemirror'
 
 export default class Canvas {
   constructor({ el }) {

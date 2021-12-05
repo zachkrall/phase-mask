@@ -6,8 +6,9 @@ module.exports = {
   arrowParens: 'avoid',
   quoteProps: 'consistent',
   trailingComma: 'none',
-  bracketSpacing: true,
+  bracketSpacing: false,
   jsxBracketSameLine: false,
   cssEnable: ['css', 'sass'],
-  printWidth: 70
+  printWidth: 128,
+  parser: 'typescript'
 }

@@ -43,17 +43,19 @@ export default class Face {
 
     console.log('model')
     console.log(this.model)
-    this.store.commit('update', { item: 'model', value: 'ready' })
+    this.store.commit('update', { item: 'tfjs', value: true })
     this.data = [face]
     this.renderPrediction()
   }
 
   async renderPrediction() {
-    this.data = await this.model.estimateFaces(
+    const newFace = await this.model.estimateFaces(
       this.video,
       false,
       false
     )
+
+    this.data = newFace
 
     // update store
     this.store.commit('update', {

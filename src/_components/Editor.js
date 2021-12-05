@@ -18,14 +18,14 @@ global.editor = CodeMirror.fromTextArea(codebox, {
   lineWrapping: true,
   styleSelectedText: true,
   styleActiveSelected: true,
-  styleActiveLine: { nonEmpty: true },
+  styleActiveLine: {nonEmpty: true},
   extraKeys: {
     'Shift-Ctrl-Enter': instance => {
       let code = instance.getValue('')
       replEval(code)
     },
     'Ctrl-Enter': instance => {
-      let { text: code } = selectCurrentBlock(instance)
+      let {text: code} = selectCurrentBlock(instance)
       replEval(code)
     }
   }
@@ -61,10 +61,10 @@ function selectCurrentBlock(editor) {
   var pos = editor.getCursor()
   var startline = pos.line
   var endline = pos.line
-  while (startline > 0 && editor.getLine(startline) !== '') {
+  while (startline > 0 && editor.getLine(startline - 1) !== '') {
     startline--
   }
-  while (endline < editor.lineCount() && editor.getLine(endline) !== '') {
+  while (endline < editor.lineCount() && editor.getLine(endline + 1) !== '') {
     endline++
   }
   var pos1 = {

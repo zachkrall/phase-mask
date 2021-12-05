@@ -1,0 +1,87 @@
+#PM_CODEBOX {
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  flex-grow: 1;
+  width: 100%;
+  overflow:auto;
+
+  --cursor-color: #fff;
+  --selection-background:rgba(255,255,255,0.2);
+
+  .cm-wrapper {
+    display:flex;
+    flex-direction:column;
+    flex-grow: 1;
+
+    width:100%;
+
+    background:rgba(0,0,0,0.3);
+  }
+
+  .cm-drag_handler {
+    position:absolute;
+    top:50%;
+    left: 100%;
+    cursor: col-resize;
+
+    button {
+      cursor: col-resize;
+      font-size:0;
+      width:5px;height:50px;
+      transform:translate(-10px, -50%);
+      transition:height ease 0.3s;
+    }
+
+    &:hover {
+      button{
+        height: 200px;
+      }
+    }
+  }
+
+  .cm-editor {
+    * {
+      // color:inherit;
+    }
+
+    flex-grow: 1;
+
+
+    .cm-scroller {
+      .cm-gutters {
+        background:unset;
+        border:0;
+        .cm-gutter {
+          background:unset;
+          /* one gutter element for each line */
+          .cm-gutterElement{ 
+            background: unset;
+            opacity: 0.5;
+            &.cm-activeLineGutter {
+              opacity: 0.9;
+            }
+          }
+        }
+      }
+    }
+    .cm-content {
+      /* the actual document content */
+      .cm-line {
+        background: unset;
+      }
+    }
+    .cm-selectionLayer {
+      /* positioned rectangles to draw the selection */
+      .cm-selectionBackground{
+        background-color:var(--selection-background);
+      }
+    }
+    .cm-cursorLayer{
+      /* positioned elements to draw cursors */
+      .cm-cursor{
+        border-color:var(--cursor-color);
+      }
+    }
+  }
+}

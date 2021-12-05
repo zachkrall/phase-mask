@@ -1,0 +1,46 @@
+#PM_REPL {
+
+  max-height: 100px;
+  height:auto;
+  width: 100%;
+  flex: 1 0 auto;
+  overflow: auto;
+
+  word-break: break-all;
+
+  background:rgba(0,0,0,0.8);
+
+  .data {
+    padding: 1rem;
+    font-family: monospace;
+    font-weight: 300;
+    color: #fff;
+    opacity: 1;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 1);
+    font-size: 0.9em;
+
+    .entry {
+      padding-bottom: 0.5em;
+      
+      span:first-child {
+        margin-right: 0.75em;
+      }
+      
+      .error {
+        color: red;
+      }
+
+      .undefined {
+        opacity:0.7;
+      }
+    }
+  }
+
+  &.hidden {
+    height: 0px;
+    flex-grow: 0;
+    flex-shrink: 1;
+    background:red;
+    overflow:hidden;
+  }
+}

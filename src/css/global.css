@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,300&display=swap');
-
 *,
 *:before,
 *:after {
@@ -38,4 +36,14 @@ body {
   width: 100%;
   height: 100%;
   z-index: 0;
+}
+
+#PM_REQUEST-CAMERA {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: red;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
 }

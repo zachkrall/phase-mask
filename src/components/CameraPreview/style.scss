@@ -1,0 +1,17 @@
+#PM_CAMERA-PREVIEW {
+  background: #333;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+
+  position: fixed;
+  top: 3rem;
+  right: 1rem;
+
+  video {
+    width: 300px;
+    height: 168px;
+    object-fit: contain;
+  }
+
+  z-index:999;
+}

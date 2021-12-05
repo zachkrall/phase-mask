@@ -1,0 +1,33 @@
+#PM_STATUSBAR {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+
+  flex-shrink: 0;
+  flex-grow: 0;
+  display: flex;
+  align-items: center;
+  // justify-content: space-between;
+  background: hsla(0, 0%, 100%, 0.1);
+  color: #fff;
+  border-radius: 0.25em;
+
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  .status {
+    padding: 0.4rem 0.8rem;
+    background: #00f;
+  }
+
+  button {
+    padding: 0.4rem 0.8rem;
+    background:unset;
+    font: inherit;
+    color:inherit;
+    border:0;
+    border-radius:0;
+    appearance:none;
+    cursor:pointer;
+  } 
+}

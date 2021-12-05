@@ -1,11 +1,12 @@
-.container {
+#PM_CODEBOX {
   display: flex;
-  min-height: 100vh;
   flex-direction: column;
-
+  flex-grow: 1;
+  width: 100%;
   position: relative;
   z-index: 999;
 }
+/* }
 .CodeMirror {
   position: relative;
   flex-grow: 1;
@@ -14,6 +15,7 @@
   color: #fff;
   font-size: inherit;
   padding: 1rem;
+  font-family: monospace!important;
 }
 .CodeMirror-gutters {
   background-color: transparent;
@@ -29,7 +31,6 @@
   color: #fff !important;
   opacity: 1;
   font-size: inherit;
-  font-family: 'Roboto Mono';
   font-weight: 300;
   text-shadow: 1px 1px 0px rgba(0, 0, 0, 1);
 }
@@ -43,7 +44,7 @@
   /* padding: 0.2em 0.5em; */
 }
 
-.CodeMirror-selected,
+/* .CodeMirror-selected,
 .CodeMirror-selected .CodeMirror-line span[role='presentation'] {
   background: #00f !important;
 }
@@ -59,21 +60,4 @@
   border-right: none;
   width: 0;
   text-shadow: 1px 1px 0px rgba(0, 0, 0, 1);
-}
-
-#repl {
-  padding: 1rem;
-  font-family: 'Roboto Mono';
-  font-weight: 300;
-  color: #fff;
-  opacity: 1;
-  text-shadow: 1px 1px 0px rgba(0, 0, 0, 1);
-  font-size: 0.9em;
-  /* height: 50px; */
-  /* background: #000; */
-  flex-shrink: 0;
-  max-height: 100px;
-  overflow: scroll;
-
-  word-break: break-all;
-}
+}  */
