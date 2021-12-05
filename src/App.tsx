@@ -12,8 +12,6 @@ import Canvas from './components/Canvas'
 
 import useCamera from '~/hooks/useCamera'
 
-import './App.scss'
-
 const App: FC<{}> = () => {
   const cam = useCamera()
 

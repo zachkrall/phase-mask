@@ -4,7 +4,7 @@ import HotKeys from 'react-hot-keys'
 import {RootState} from '~/redux/store'
 import {ReplLog, toggleRepl} from '~/redux/repl'
 
-import './style.scss'
+import styles from './styles.module.scss'
 
 const Repl: FC = () => {
   const dispatch = useDispatch()
@@ -25,10 +25,10 @@ const Repl: FC = () => {
   }, [history])
 
   return (
-    <aside id="PM_REPL" ref={container} className={[isVisible ? '' : 'hidden'].join(' ')}>
-      <div className={'data'}>
+    <aside className={[styles.repl, isVisible ? '' : styles['hidden']].join(' ')} ref={container}>
+      <div className={styles['data']}>
         {history.map((entry, index) => (
-          <div key={entry.text + index} className={'entry'}>
+          <div key={entry.text + index} className={styles['entry']}>
             <span style={{opacity: 0.3}}>{entry.timestamp}</span>
             <span className={entry.state}>{entry.text}</span>
           </div>

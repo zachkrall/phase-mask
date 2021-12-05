@@ -3,7 +3,7 @@ import {Canvas as ThreeCanvas} from '@react-three/fiber'
 import * as THREE from 'three'
 import useWindow from '../../hooks/useWindow'
 
-import './style.scss'
+import styles from './_.module.scss'
 
 import {face as __test_face__} from '../__test__/face'
 
@@ -46,7 +46,7 @@ const Canvas = () => {
   }, [])
 
   return (
-    <div id="PM_CANVAS">
+    <div className={styles['canvas']}>
       <ThreeCanvas>
         <mesh ref={demoObj}>
           <sphereBufferGeometry></sphereBufferGeometry>

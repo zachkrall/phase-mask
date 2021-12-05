@@ -1,7 +1,7 @@
 import React from 'react'
-import { render } from 'react-dom'
+import {render} from 'react-dom'
 
-import './css/global.css'
+import './css/global.scss'
 import App from './App'
 
 render(<App />, document.querySelector('#root'))

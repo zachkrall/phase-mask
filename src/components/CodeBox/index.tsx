@@ -1,9 +1,5 @@
 import React, {useRef, useEffect, useState, FC} from 'react'
 import {useDispatch} from 'react-redux'
-import {replEval} from '~/redux/repl'
-
-import './editor.css'
-import './style.scss'
 
 import {EditorState} from '@codemirror/state'
 import {drawSelection, EditorView, highlightActiveLine, highlightSpecialChars, keymap} from '@codemirror/view'
@@ -23,10 +19,11 @@ import {lintKeymap} from '@codemirror/lint'
 import {autocompletion, completionKeymap} from '@codemirror/autocomplete'
 
 import {livecodeKeymap} from './KeyMapping'
+import {replEval} from '~/redux/repl'
 
 const CodeBox: FC<{}> = () => {
   const codebox = useRef<HTMLDivElement | null>(null)
-  const mirror = useRef<any>(null)
+  const mirror = useRef<EditorView | null>(null)
   const dispatch = useDispatch()
 
   const [isResizing, setIsResizing] = useState(false)
@@ -63,11 +60,24 @@ const CodeBox: FC<{}> = () => {
               ...livecodeKeymap
             ]),
             javascript()
-          ]
+          ],
+          doc: `new loop(({sphere})=>{
+  sphere.position.x = Math.sin(Date.now()* 0.001) * 2
+  sphere.position.y = Math.cos(Date.now()* 0.001) * 2
+}).out()`
         }),
         parent: codebox.current
       })
     }
+
+    setTimeout(() => {
+      dispatch(
+        replEval(`new loop(({sphere})=>{
+  sphere.position.x = Math.sin(Date.now()* 0.001) * 2
+  sphere.position.y = Math.cos(Date.now()* 0.001) * 2
+}).out()`)
+      )
+    }, 1000)
 
     console.log(mirror.current)
 
@@ -110,7 +120,7 @@ const CodeBox: FC<{}> = () => {
   }, [isResizing])
 
   return (
-    <div id="PM_CODEBOX">
+    <div className={'phase-mask-codebox'}>
       <div className="cm-wrapper" ref={codebox}></div>
       <div className="cm-drag_handler">
         <button onMouseDown={onResizeDown}>Ok</button>
