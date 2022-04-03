@@ -1,20 +1,18 @@
-import React, {FC, useEffect} from 'react'
-import {Provider, useStore, useSelector} from 'react-redux'
+import {FC, useEffect} from 'react'
+import {Provider, useSelector} from 'react-redux'
 import store from './redux/store'
 
 import Toolbar from './components/Toolbar'
-import StatusBar from './components/StatusBar'
 import CodeBox from './components/CodeBox'
-import Repl from './components/Repl'
-import CameraPreview from './components/CameraPreview'
-import SelectCamera from './components/SelectCamera'
-import Canvas from './components/Canvas'
+import DevBar from './components/DevBar'
+import Renderer from './components/Renderer'
 
 import useCamera from '~/hooks/useCamera'
 
-const App: FC<{}> = () => {
+const App: FC = () => {
   const cam = useCamera()
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const face = useSelector<any>(state => state.facemesh)
 
   useEffect(() => {
@@ -24,13 +22,12 @@ const App: FC<{}> = () => {
 
   return (
     <div id="app">
-      <Canvas />
+      <Renderer />
       {/* <CameraPreview stream={cam.stream} streamId={cam.id} /> */}
       <div id="container">
         <Toolbar />
         <CodeBox />
-        <StatusBar />
-        <Repl />
+        <DevBar />
       </div>
       {/* {!cam.id && (
           <SelectCamera
@@ -42,7 +39,7 @@ const App: FC<{}> = () => {
   )
 }
 
-const Index: FC<{}> = () => {
+const Index: FC = () => {
   return (
     <Provider store={store}>
       <App />

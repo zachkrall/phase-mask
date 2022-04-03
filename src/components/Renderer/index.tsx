@@ -1,14 +1,14 @@
-import React, {useEffect, useRef, useState} from 'react'
+import {useEffect, useRef} from 'react'
 import {Canvas as ThreeCanvas} from '@react-three/fiber'
 import * as THREE from 'three'
-import useWindow from '../../hooks/useWindow'
+// import useWindow from '../../hooks/useWindow'
 
 import styles from './_.module.scss'
 
-import {face as __test_face__} from '../__test__/face'
+// import {face as __test_face__} from '../__test__/face'
 
 const Canvas = () => {
-  const {width, height} = useWindow()
+  // const {width, height} = useWindow()
 
   const faceMeshObj = useRef(null)
   const demoObj = useRef(null)
@@ -17,7 +17,7 @@ const Canvas = () => {
   useEffect(() => {
     window['renderer'] = []
 
-    window['loop'] = function (cb) {
+    window['loop'] = function (cb: (T: unknown) => unknown) {
       this.cb = cb
       return this
     }
@@ -27,7 +27,7 @@ const Canvas = () => {
     }
 
     const cycle = () => {
-      window['renderer'].forEach(cb =>
+      window['renderer'].forEach((cb: (T: unknown) => unknown) =>
         cb({
           sphere: demoObj.current
         })
