@@ -1,0 +1,21 @@
+trailingComma: 'es5'
+
+tabWidth: 2
+
+semi: false
+
+singleQuote: true
+
+arrowParens: 'avoid'
+
+quoteProps: 'consistent'
+
+bracketSpacing: false
+
+jsxBracketSameLine: false
+
+cssEnable: -css - sass - scss
+
+printWidth: 128
+
+parser: 'typescript'

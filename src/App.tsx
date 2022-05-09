@@ -1,50 +1,46 @@
-import {FC, useEffect} from 'react'
-import {Provider, useSelector} from 'react-redux'
+import {FC, useEffect, useRef} from 'react'
+import {Provider, useDispatch} from 'react-redux'
 import store from './redux/store'
 
 import Toolbar from './components/Toolbar'
 import CodeBox from './components/CodeBox'
-import DevBar from './components/DevBar'
+import Log from './components/Log'
+
+import styles from './App.module.scss'
+
+import {requestPermissions} from '~/redux/camera'
+import CameraPreview from './components/CameraPreview'
+import FaceDetector from './components/FaceRecognition/FaceDetector'
 import Renderer from './components/Renderer'
 
-import useCamera from '~/hooks/useCamera'
-
-const App: FC = () => {
-  const cam = useCamera()
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const face = useSelector<any>(state => state.facemesh)
+const Main = () => {
+  const dispatch = useDispatch()
+  const appRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    cam.requestDeviceList()
-    console.log(face)
-  }, [])
+    dispatch(requestPermissions())
+  }, [dispatch])
 
   return (
-    <div id="app">
+    <>
       <Renderer />
-      {/* <CameraPreview stream={cam.stream} streamId={cam.id} /> */}
-      <div id="container">
+      <div className={styles['container']} ref={appRef}>
         <Toolbar />
         <CodeBox />
-        <DevBar />
+        <Log />
       </div>
-      {/* {!cam.id && (
-          <SelectCamera
-            devices={cam.devices}
-            onSelect={id => cam.requestCamera(id)}
-          />
-        )} */}
-    </div>
+      <CameraPreview appRef={appRef} />
+      <FaceDetector />
+    </>
   )
 }
 
-const Index: FC = () => {
+const App: FC = () => {
   return (
     <Provider store={store}>
-      <App />
+      <Main />
     </Provider>
   )
 }
 
-export default Index
+export default App

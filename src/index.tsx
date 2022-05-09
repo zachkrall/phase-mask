@@ -1,10 +1,13 @@
-import {render} from 'react-dom'
+import {createRoot} from 'react-dom/client'
 
 import './assets/global.scss'
 import App from './App'
 
-import * as THREE from 'three'
+const container = document.querySelector('#root')
 
-window['THREE'] = THREE
+if (container) {
+  const root = createRoot(container)
+  root.render(<App />)
+}
 
-render(<App />, document.querySelector('#root'))
+console.log('error')

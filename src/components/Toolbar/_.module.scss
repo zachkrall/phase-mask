@@ -1,0 +1,61 @@
+.toolbar {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+
+  flex-shrink: 0;
+  flex-grow: 0;
+  display: flex;
+  // align-items: center;
+  // justify-content: space-between;
+  // background: hsla(0, 0%, 0%, 0.3);
+  // backdrop-filter: blur(10px);
+  
+  background:#000;
+
+  color: #fff;
+
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  padding:0.25rem;
+
+  gap: 5px;
+}
+
+.nav-item {
+  // resets
+  border:0;
+  color:inherit;
+  font:inherit;
+  
+  // styles
+  padding: 0.4rem 0.8rem;
+  background: #000;
+  display:inline-flex;
+  align-items:center;
+  border-radius: 5px;
+  
+  &:focus, &:hover{
+    outline:0;
+    background:rgba(255,255,255,0.1);
+    cursor:pointer;
+  }
+
+  &--error{
+    background:hsl(6, 80%, 61%);
+    
+    &:hover{
+      background:hsl(6, 80%, 40%);
+    }
+  }
+
+  &--success{
+    background:hsl(132, 80%, 61%);
+
+    &:hover{
+      background:hsl(132, 80%, 40%);
+    }
+  }
+
+}

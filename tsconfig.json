@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "allowUmdGlobalAccess": false,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "alwaysStrict": false,
     "baseUrl": ".",
-    "downlevelIteration": false,
+    "downlevelIteration": true,
     "esModuleInterop": true,
     "exactOptionalPropertyTypes": false,
     "experimentalDecorators": false,
@@ -38,7 +38,8 @@
     "types": [
       "node",
       "@types/jest",
-      "@jest/types"
+      "@jest/types",
+      "vite/client"
     ],
     "paths": {
       "~/*": [
@@ -51,7 +52,8 @@
     "**/*.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "**/*.js"
+    "**/*.js",
+    ".prettierrc.js"
   ],
   "exclude": [
     "node_modules"

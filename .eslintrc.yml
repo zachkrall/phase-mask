@@ -27,3 +27,12 @@ extends:
 settings:
   react:
     version: 'detect'
+
+rules:
+  'react/prop-types': 
+    - off
+  '@typescript-eslint/no-unused-vars':
+    - "off"
+    - varsIgnorePattern: "^_"
+  'no-unused-vars':
+    - off

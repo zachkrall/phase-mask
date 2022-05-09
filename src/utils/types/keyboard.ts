@@ -4,5 +4,5 @@ export enum Keys {
   Option = '⌥',
   Shift = '⇧',
   CapsLock = '⇪',
-  Return = '↩︎'
+  Return = '⏎',
 }

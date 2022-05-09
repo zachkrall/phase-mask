@@ -1,0 +1,35 @@
+.log{
+  flex-basis: auto;
+  flex-grow: 1;
+  flex-shrink: 0;
+
+  max-height: 300px;
+  height:auto;
+  background:rgba(0,0,0,0.7);
+  border-top:1px solid #666;
+  width:100%;
+  padding:0.25rem;
+
+  overflow:auto;
+
+  display:flex;
+}
+
+.data { 
+  height: 100%;
+  flex: 1 1 50%;
+  overflow:auto;
+  border-right:1px solid #666;
+
+  padding: 0.25rem;
+}
+
+.entry {
+  padding: 0.25rem;
+  display:flex;
+  gap: 10px;
+
+  & > :first-child {
+    flex:1 1 auto;
+  }
+}

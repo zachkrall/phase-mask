@@ -1,6 +1,7 @@
 import {KeyBinding, Command} from '@codemirror/view'
 import store from '~/redux/store'
-import {replEval, toggleRepl} from '~/redux/repl'
+import {replEval} from '~/redux/repl'
+import {toggleUIPane, UIPane} from '~/redux/ui'
 
 const evalCurrentBlock: Command = view => {
   const pos = view.state.selection.main.head
@@ -35,8 +36,7 @@ const evalAll: Command = view => {
 }
 
 const toggleReplCommand: Command = () => {
-  store.dispatch(toggleRepl())
-  console.log('hello, world')
+  store.dispatch(toggleUIPane(UIPane.Log))
   return true
 }
 
@@ -44,5 +44,5 @@ export const livecodeKeymap: KeyBinding[] = [
   {key: 'Cmd-Enter', run: evalCurrentBlock, preventDefault: true},
   {key: 'Ctrl-Enter', run: evalCurrentBlock, preventDefault: true},
   {key: 'Cmd-Shift-Enter', run: evalAll, preventDefault: true},
-  {key: 'Ctrl-r', run: toggleReplCommand, preventDefault: true}
+  {key: 'Ctrl-r', run: toggleReplCommand, preventDefault: true},
 ]

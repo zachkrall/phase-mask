@@ -1,25 +1,26 @@
 import {useRef, useEffect, useState, FC} from 'react'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 
-import {EditorView} from '@codemirror/view'
-// import {EditorState} from '@codemirror/state'
-// import {drawSelection, EditorView, highlightActiveLine, highlightSpecialChars, keymap} from '@codemirror/view'
-// import {history, historyKeymap} from '@codemirror/history'
-// import {foldGutter, foldKeymap} from '@codemirror/fold'
-// import {indentOnInput} from '@codemirror/language'
-// import {javascript} from '@codemirror/lang-javascript'
-// import {lineNumbers, highlightActiveLineGutter} from '@codemirror/gutter'
-// import {defaultKeymap} from '@codemirror/commands'
-// import {bracketMatching} from '@codemirror/matchbrackets'
-// import {closeBrackets, closeBracketsKeymap} from '@codemirror/closebrackets'
-// import {searchKeymap, highlightSelectionMatches} from '@codemirror/search'
-// import {commentKeymap} from '@codemirror/comment'
-// import {rectangularSelection} from '@codemirror/rectangular-selection'
-// import {lintKeymap} from '@codemirror/lint'
-// import {autocompletion, completionKeymap} from '@codemirror/autocomplete'
+// import {EditorView} from '@codemirror/view'
+import {EditorState} from '@codemirror/state'
+import {drawSelection, EditorView, highlightActiveLine, highlightSpecialChars, keymap} from '@codemirror/view'
+import {history, historyKeymap} from '@codemirror/history'
+import {foldGutter, foldKeymap} from '@codemirror/fold'
+import {indentOnInput} from '@codemirror/language'
+import {javascript} from '@codemirror/lang-javascript'
+import {lineNumbers, highlightActiveLineGutter} from '@codemirror/gutter'
+import {defaultKeymap} from '@codemirror/commands'
+import {bracketMatching} from '@codemirror/matchbrackets'
+import {closeBrackets, closeBracketsKeymap} from '@codemirror/closebrackets'
+import {searchKeymap, highlightSelectionMatches} from '@codemirror/search'
+import {commentKeymap} from '@codemirror/comment'
+import {rectangularSelection} from '@codemirror/rectangular-selection'
+import {lintKeymap} from '@codemirror/lint'
+import {autocompletion, completionKeymap} from '@codemirror/autocomplete'
 
-// import {livecodeKeymap} from './KeyMapping'
+import {livecodeKeymap} from './KeyMapping'
 import {replEval} from '~/redux/repl'
+import {selectIsVisible, UIPane} from '~/redux/ui'
 
 // import {syntaxTree} from '@codemirror/language'
 
@@ -66,64 +67,59 @@ const CodeBox: FC = () => {
 
   const [isResizing, setIsResizing] = useState(false)
 
+  const isVisible = useSelector(selectIsVisible(UIPane.Editor))
+
   useEffect(() => {
     if (codebox.current) {
-      // mirror.current = new EditorView({
-      // state: EditorState.create({
-      //   extensions: [
-      //     lineNumbers(),
-      //     highlightActiveLineGutter(),
-      //     highlightSpecialChars(),
-      //     history(),
-      //     foldGutter(),
-      //     drawSelection(),
-      //     EditorState.allowMultipleSelections.of(true),
-      //     indentOnInput(),
-      //     bracketMatching(),
-      //     closeBrackets(),
-      //     autocompletion(),
-      //     rectangularSelection(),
-      //     highlightActiveLine(),
-      //     highlightSelectionMatches(),
-      //     keymap.of([
-      //       // ...closeBracketsKeymap,
-      //       // ...defaultKeymap,
-      //       // ...searchKeymap,
-      //       // ...historyKeymap,
-      //       // ...foldKeymap,
-      //       // ...commentKeymap,
-      //       // ...completionKeymap,
-      //       // ...lintKeymap,
-      //       ...livecodeKeymap
-      //     ]),
-      //     javascript({
-      //       jsx: false,
-      //       typescript: false
-      //     })
-      //   ],
-      //           doc: `new loop(({sphere})=>{
-      //   sphere.position.x = Math.sin(Date.now()* 0.001) * 2
-      //   sphere.position.y = Math.cos(Date.now()* 0.001) * 2
-      // }).out()`
-      //         }),
-      //         parent: codebox.current
-      //       })
+      mirror.current = new EditorView({
+        state: EditorState.create({
+          extensions: [
+            lineNumbers(),
+            highlightActiveLineGutter(),
+            highlightSpecialChars(),
+            history(),
+            foldGutter(),
+            drawSelection(),
+            EditorState.allowMultipleSelections.of(true),
+            indentOnInput(),
+            bracketMatching(),
+            closeBrackets(),
+            autocompletion(),
+            rectangularSelection(),
+            highlightActiveLine(),
+            highlightSelectionMatches(),
+            keymap.of([
+              // ...closeBracketsKeymap,
+              // ...defaultKeymap,
+              // ...searchKeymap,
+              // ...historyKeymap,
+              // ...foldKeymap,
+              // ...commentKeymap,
+              // ...completionKeymap,
+              // ...lintKeymap,
+              ...livecodeKeymap,
+            ]),
+            javascript({
+              jsx: false,
+              typescript: false,
+            }),
+          ],
+          doc: `'hello from codebox'`,
+        }),
+        parent: codebox.current,
+      })
     }
-
-    setTimeout(() => {
-      dispatch(
-        replEval(`new loop(({sphere})=>{
-  sphere.position.x = Math.sin(Date.now()* 0.001) * 2
-  sphere.position.y = Math.cos(Date.now()* 0.001) * 2
-}).out()`)
-      )
-    }, 1000)
-
-    console.log(mirror.current)
 
     return () => {
       mirror.current?.destroy()
     }
+  }, [isVisible])
+
+  useEffect(() => {
+    // only use once
+    setTimeout(() => {
+      dispatch(replEval(`'hello from codebox'`))
+    }, 1000)
   }, [])
 
   const onResizeDown = () => {
@@ -165,10 +161,14 @@ const CodeBox: FC = () => {
 
   return (
     <div className={'phase-mask-codebox'}>
-      <div className="cm-wrapper" ref={codebox}></div>
-      <div className="cm-drag_handler">
-        <button onMouseDown={onResizeDown}>Ok</button>
-      </div>
+      {isVisible && (
+        <>
+          <div className="cm-wrapper" ref={codebox}></div>
+          <div className="cm-drag_handler">
+            <button onMouseDown={onResizeDown}>Ok</button>
+          </div>
+        </>
+      )}
     </div>
   )
 }
