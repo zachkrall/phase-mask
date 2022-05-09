@@ -1,5 +1,5 @@
-<a href="https://mfadt.parsons.edu"><img src="./tns-mfadt.png" width="300"/></a>
-<br/><br/><img src="./logo.png" width="200"/>
+<a href="https://mfadt.parsons.edu"><img src="./.github/readme/tns-mfadt.png" width="300"/></a>
+<br/><br/><img src="./.github/readme/logo.png" width="200"/>
 <br/><br/>Thesis Project: <a href="https://mfadt.zachkrall.com">mfadt.zachkrall.com</a>
 
 ## about

@@ -1,0 +1,14 @@
+.kbd{
+  font-family:inherit;
+  letter-spacing: 0.05em;
+  font-size: 0.9em;
+  color: #666;
+
+  display:inline-flex;
+
+  span{
+    display:inline-block;
+    width: 1em;
+    text-align:center;
+  }
+}

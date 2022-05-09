@@ -1,24 +1,15 @@
-import React, { useState, FC } from 'react'
+import PrimaryMenu from './PrimaryMenu'
+import CameraMenu from './CameraMenu'
+import MLMenu from './MLMenu'
 
-import Logo from '../../assets/logo.svg'
-
-import './style.scss'
-
-const Status: FC<{}> = ({ children }) => {
-  return <div className="nav-item">{children}</div>
-}
+import styles from './_.module.scss'
 
 const Toolbar = () => {
   return (
-    <nav id="PM_TOOLBAR">
-      <Status>
-        <Logo
-          height={'2em'}
-          width={'2em'}
-          style={{ marginRight: '0.5em' }}
-        />
-        Phase Mask
-      </Status>
+    <nav className={styles['toolbar']}>
+      <PrimaryMenu />
+      <CameraMenu />
+      <MLMenu />
     </nav>
   )
 }

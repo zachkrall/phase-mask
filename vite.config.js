@@ -1,13 +1,17 @@
+/* eslint-env node */
 import path from 'path'
 import {defineConfig} from 'vite'
 import react from '@vitejs/plugin-react'
-import reactSvgPlugin from 'vite-plugin-react-svg'
+import svgr from 'vite-plugin-svgr-component'
 
 export default defineConfig({
-  plugins: [react(), reactSvgPlugin({defaultExport: 'component', expandProps: 'end'})],
+  server: {
+    https: true,
+  },
+  plugins: [react(), svgr()],
   resolve: {
     alias: {
-      '~': path.resolve(__dirname, 'src')
-    }
-  }
+      '~': path.resolve(__dirname, 'src'),
+    },
+  },
 })

@@ -1,18 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit'
 
 const facemesh = createSlice({
   name: 'facemesh',
-  initialState: {},
-  reducers: {
-    one(state, action) {}
-  }
-});
+  initialState: {
+    geometry: {}
+  },
+  reducers: {}
+})
 
 // Extract the action creators object and the reducer
-const { actions, reducer } = facemesh;
+const {reducer} = facemesh
 
 // Extract and export each action creator by name
-export const { one } = actions;
+// export const { one } = actions;
 
 // Export the reducer, either as a default or named export
-export default reducer;
+export default reducer

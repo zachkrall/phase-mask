@@ -1,53 +1,46 @@
-import React, {FC, useEffect} from 'react'
-import {Provider, useStore, useSelector} from 'react-redux'
+import {FC, useEffect, useRef} from 'react'
+import {Provider, useDispatch} from 'react-redux'
 import store from './redux/store'
 
 import Toolbar from './components/Toolbar'
-import StatusBar from './components/StatusBar'
 import CodeBox from './components/CodeBox'
-import Repl from './components/Repl'
+import Log from './components/Log'
+
+import styles from './App.module.scss'
+
+import {requestPermissions} from '~/redux/camera'
 import CameraPreview from './components/CameraPreview'
-import SelectCamera from './components/SelectCamera'
-import Canvas from './components/Canvas'
+import FaceDetector from './components/FaceRecognition/FaceDetector'
+import Renderer from './components/Renderer'
 
-import useCamera from '~/hooks/useCamera'
-
-const App: FC<{}> = () => {
-  const cam = useCamera()
-
-  const face = useSelector<any>(state => state.facemesh)
+const Main = () => {
+  const dispatch = useDispatch()
+  const appRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    cam.requestDeviceList()
-    console.log(face)
-  }, [])
+    dispatch(requestPermissions())
+  }, [dispatch])
 
   return (
-    <div id="app">
-      <Canvas />
-      {/* <CameraPreview stream={cam.stream} streamId={cam.id} /> */}
-      <div id="container">
+    <>
+      <Renderer />
+      <div className={styles['container']} ref={appRef}>
         <Toolbar />
         <CodeBox />
-        <StatusBar />
-        <Repl />
+        <Log />
       </div>
-      {/* {!cam.id && (
-          <SelectCamera
-            devices={cam.devices}
-            onSelect={id => cam.requestCamera(id)}
-          />
-        )} */}
-    </div>
+      <CameraPreview appRef={appRef} />
+      <FaceDetector />
+    </>
   )
 }
 
-const Index: FC<{}> = () => {
+const App: FC = () => {
   return (
     <Provider store={store}>
-      <App />
+      <Main />
     </Provider>
   )
 }
 
-export default Index
+export default App
