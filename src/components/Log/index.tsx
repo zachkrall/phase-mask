@@ -99,6 +99,17 @@ const DevBar = () => {
             })}
           </div>
           <div className={styles['data']} style={{paddingLeft: '0.8rem'}}>
+            <h1
+              style={{
+                fontSize: 'inherit',
+                fontWeight: '500',
+                padding: '0.5rem 0.25rem',
+                borderBottom: '1px solid rgba(255,255,255,0.1)',
+                marginBottom: '1rem',
+              }}
+            >
+              Face Estimates
+            </h1>
             <ObjectInspector
               theme={{
                 BASE_FONT_FAMILY: 'Menlo, monospace',

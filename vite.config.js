@@ -5,10 +5,13 @@ import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr-component'
 
 export default defineConfig({
+  server: {
+    https: true,
+  },
   plugins: [react(), svgr()],
   resolve: {
     alias: {
-      '~': path.resolve(__dirname, 'src')
-    }
-  }
+      '~': path.resolve(__dirname, 'src'),
+    },
+  },
 })

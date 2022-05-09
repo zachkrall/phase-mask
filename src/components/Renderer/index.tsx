@@ -20,9 +20,7 @@ const Main: Component<{estimates: Estimate[]}> = ({estimates}) => {
   const sphereRef = useRef<any>(null)
 
   useEffect(() => {
-    setTimeout(() => {
-      window.face = () => meshRef.current
-    }, 1000)
+    window.face = () => meshRef.current
   }, [])
 
   useLayoutEffect(() => {
@@ -58,7 +56,7 @@ const Main: Component<{estimates: Estimate[]}> = ({estimates}) => {
       <OrbitControls />
       <mesh ref={meshRef} rotation={[0, 0, 0]}>
         <bufferGeometry attach="geometry" ref={geoRef} />
-        <meshNormalMaterial wireframe={true} attach="material" side={DoubleSide} />
+        <meshBasicMaterial wireframe={true} color={0xffffff} attach="material" side={DoubleSide} />
       </mesh>
       <mesh>
         <boxBufferGeometry args={[300, 168, 1]} />

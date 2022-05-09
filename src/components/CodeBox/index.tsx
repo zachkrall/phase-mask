@@ -104,7 +104,9 @@ const CodeBox: FC = () => {
               typescript: false,
             }),
           ],
-          doc: `'hello from codebox'`,
+          doc: `(function(){
+  return face().geometry
+})()`,
         }),
         parent: codebox.current,
       })
@@ -118,7 +120,11 @@ const CodeBox: FC = () => {
   useEffect(() => {
     // only use once
     setTimeout(() => {
-      dispatch(replEval(`'hello from codebox'`))
+      dispatch(
+        replEval(`(function(){
+  return face().geometry
+})()`)
+      )
     }, 1000)
   }, [])
 
