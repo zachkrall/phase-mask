@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react'
 import svgr from 'vite-plugin-svgr-component'
 
 export default defineConfig({
+  base: './',
   server: {
     https: true,
   },

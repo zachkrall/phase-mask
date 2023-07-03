@@ -10,7 +10,7 @@ arrowParens: 'avoid'
 
 quoteProps: 'consistent'
 
-bracketSpacing: false
+bracketSpacing: true
 
 jsxBracketSameLine: false
 

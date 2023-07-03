@@ -1,14 +1,21 @@
-import * as faceMesh from '@mediapipe/face_mesh'
-import * as faceLandmarksDetection from '@tensorflow-models/face-landmarks-detection'
-import '@tensorflow/tfjs-backend-webgl'
+import { FaceLandmarker, FilesetResolver } from '@mediapipe/tasks-vision'
 
 export async function createDetector() {
-  const model = faceLandmarksDetection.SupportedModels.MediaPipeFaceMesh
+  const filesetResolver = await FilesetResolver.forVisionTasks(
+    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm'
+  )
 
-  return faceLandmarksDetection.createDetector(model, {
-    runtime: 'mediapipe',
-    refineLandmarks: false,
-    maxFaces: 2,
-    solutionPath: `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@${faceMesh.VERSION}`,
+  const faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, {
+    baseOptions: {
+      modelAssetPath: `https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task`,
+      delegate: 'GPU',
+    },
+    outputFaceBlendshapes: true,
+    runningMode: 'IMAGE',
+    numFaces: 1,
   })
+
+  await faceLandmarker.setOptions({ runningMode: 'VIDEO' })
+
+  return faceLandmarker
 }

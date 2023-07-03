@@ -1,16 +1,16 @@
-import {FaceLandmarksDetector} from '@tensorflow-models/face-landmarks-detection'
-import {useEffect, useRef} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import {selectActiveDevice} from '~/redux/camera'
-import {selectTFStatus, updateEstimate, updateSpeed, updateStatus} from '~/redux/tensorflow'
-import {createDetector} from './createDetector'
+import { useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectActiveDevice } from '~/redux/camera'
+import { selectTFStatus, updateBoundingBox, updateEstimate, updateSpeed, updateStatus } from '~/redux/tensorflow'
+import { createDetector } from './createDetector'
+import { FaceLandmarker } from '@mediapipe/tasks-vision'
 
 const FaceDetector = () => {
   const dispatch = useDispatch()
   const activeDevice = useSelector(selectActiveDevice)
   const mlStatus = useSelector(selectTFStatus)
   const raf = useRef<number>(0)
-  const detector = useRef<FaceLandmarksDetector | null>(null)
+  const detector = useRef<FaceLandmarker | null>(null)
 
   useEffect(() => {
     async function setup() {
@@ -28,7 +28,7 @@ const FaceDetector = () => {
 
     return () => {
       // cleanup
-      detector.current?.dispose()
+      detector.current?.close()
       detector.current = null
       dispatch(updateStatus('not running'))
     }
@@ -48,7 +48,12 @@ const FaceDetector = () => {
           const isReady = v.readyState === 4
 
           if (isReady) {
-            const estimate = await dtc.estimateFaces(v, {flipHorizontal: false})
+            const timestamp = new Date().getTime()
+            const results = dtc.detectForVideo(v, timestamp)
+            const estimate = results.faceLandmarks?.[0] ?? []
+            const box = v.getBoundingClientRect()
+
+            console.log(estimate)
 
             const next_date = Date.now()
             const speed = next_date - last_date
@@ -56,6 +61,7 @@ const FaceDetector = () => {
 
             dispatch(updateSpeed(speed))
             dispatch(updateEstimate(estimate))
+            dispatch(updateBoundingBox({ width: box.width, height: box.height }))
           }
 
           raf.current = requestAnimationFrame(loop)
