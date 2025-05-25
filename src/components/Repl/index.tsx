@@ -4,9 +4,9 @@ import {RootState} from '~/redux/store'
 import {ReplLog} from '~/redux/repl'
 
 const Repl: FC = () => {
-  const container = useRef<HTMLDivElement>()
+  const container = useRef<HTMLDivElement | null>(null)
   const history = useSelector<RootState, ReplLog[]>(state => state.repl.history)
-  const isVisible = useSelector<RootState, boolean>(state => state.repl.isVisible)
+  // const isVisible = useSelector<RootState, boolean>(state => state.repl.isVisible)
 
   useEffect(() => {
     if (container.current) {
@@ -23,12 +23,12 @@ const Repl: FC = () => {
   }, [history])
 
   return (
-    <div className={['repl', isVisible ? '' : 'hidden'].join(' ')} ref={container}>
+    <div className={['repl', /*isVisible ? '' : 'hidden' */].join(' ')} ref={container}>
       <div className={'data'}>
         {history.map((entry, index) => (
-          <div key={entry.text + index} className={'entry'}>
-            <span style={{opacity: 0.3}}>{entry.timestamp}</span>
-            <span className={entry.state}>{entry.text}</span>
+          <div key={(entry.text ?? '') + index} className={'entry'}>
+            <span style={{opacity: 0.3, flexShrink: 0}}>{entry.timestamp}</span>
+            <span className={entry.state} style={{flexGrow: 1, flexShrink: 1}}>{entry.text}</span>
           </div>
         ))}
       </div>

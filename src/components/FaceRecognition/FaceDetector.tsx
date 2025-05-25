@@ -19,7 +19,7 @@ const FaceDetector = () => {
         detector.current = await createDetector()
         dispatch(updateStatus('running'))
       } catch (e) {
-        console.log(e)
+        console.error(e)
         dispatch(updateStatus('error'))
       }
     }
@@ -52,8 +52,6 @@ const FaceDetector = () => {
             const results = dtc.detectForVideo(v, timestamp)
             const estimate = results.faceLandmarks?.[0] ?? []
             const box = v.getBoundingClientRect()
-
-            console.log(estimate)
 
             const next_date = Date.now()
             const speed = next_date - last_date

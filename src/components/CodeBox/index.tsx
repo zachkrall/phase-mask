@@ -60,6 +60,33 @@ import {selectIsVisible, UIPane} from '~/redux/ui'
 //   return null
 // }
 
+const defaultFrag = `
+  varying vec2 vUv;
+  uniform vec2 u_resolution;
+  uniform float u_time;
+  void main(){
+    vec2 st = vUv;
+    vec3 color = vec3(st.x, st.y, 1.0 - st.x);
+    float a = fract(st.y * 50.0);
+    color *= vec3(a);
+    gl_FragColor = vec4(color, 1.0);
+  }
+`
+
+const defaultVert = `
+  varying vec2 vUv;
+  uniform float u_time;
+  uniform float u_amp;
+
+  void main() {
+    vUv = uv;
+    vec3 newPosition = position + vec3(0., 0., sin(u_time + position.x)*u_amp);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+  }
+`
+
+const defaultDoc = [`face.frag = \`${defaultFrag}\``, ``, `face.vert = \`${defaultVert}\``].join('\n')
+
 const CodeBox: FC = () => {
   const codebox = useRef<HTMLDivElement | null>(null)
   const mirror = useRef<EditorView | null>(null)
@@ -104,9 +131,7 @@ const CodeBox: FC = () => {
               typescript: false,
             }),
           ],
-          doc: `(function(){
-  return face().geometry
-})()`,
+          doc: defaultDoc,
         }),
         parent: codebox.current,
       })
@@ -121,9 +146,7 @@ const CodeBox: FC = () => {
     // only use once
     setTimeout(() => {
       dispatch(
-        replEval(`(function(){
-  return face().geometry
-})()`)
+        replEval(defaultDoc)
       )
     }, 1000)
   }, [])
