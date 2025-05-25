@@ -260,7 +260,7 @@ const CodeBox: FC = () => {
         <>
           <div className="cm-wrapper" ref={codebox}></div>
           <div className="cm-drag_handler">
-            <button onMouseDown={onResizeDown}>Ok</button>
+            <button className="cm-drag_handler_inner" onMouseDown={onResizeDown}></button>
           </div>
         </>
       )}

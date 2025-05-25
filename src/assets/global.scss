@@ -103,12 +103,14 @@ button, [role="button"] {
     overflow:visible;
     
     button {
+      appearance: none;
+      border: 0;
       border-radius: 99px;
       cursor: col-resize;
       font-size:0;
       width:5px;height:50px;
       transform:translate(-10px, -50%);
-      transition:height ease 0.3s;
+      transition:height ease-out 0.2s;
       overflow: hidden;
     }
 

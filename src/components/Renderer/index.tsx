@@ -63,9 +63,9 @@ export const config = {
   uniform float u_time;
   void main(){
     vec2 st = vUv;
-    st.y = fract(2. * st.y + u_time);
-    vec3 color = vec3(1.0-st.y-sin(u_time), 1.0-st.x, u_time * 100.);
-    gl_FragColor = vec4(color, 1.);
+    vec3 color = vec3(st.x, st.y, 1.0);
+    vec3 overlay = vec3(fract(st.y * 200. + u_time * 10. / (st.x)) + 0.2);
+    gl_FragColor = vec4(color * overlay, 1.);
   }
 `
 }
