@@ -23,19 +23,14 @@ const Main = () => {
 
   return (
     <>
-      <div style={{ position: 'relative', isolation: 'isolate', zIndex: 1000, display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
-        <div style={{ position: 'relative', transform: 'translateZ(0)', isolation: 'isolate', zIndex: 1000, flex: '1 1 auto', height: '100px', overflow: 'hidden'}}>
-          <Renderer />
-          <div className={styles['container']} ref={appRef}>
-            <Toolbar />
-            <CodeBox />
-          </div>
-          <CameraPreview appRef={appRef} />
-        </div>
-        <div style={{ flex: '0 0 auto', height: '300px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-          <Log />
-        </div>
+      <Renderer />
+      <div className={styles['container']} ref={appRef}>
+        <Toolbar />
+        <CodeBox />
+        <Log />
       </div>
+      <CameraPreview appRef={appRef} />
+
       <FaceDetector />
     </>
   )

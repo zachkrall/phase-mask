@@ -21,6 +21,10 @@ declare global {
       frag?: string
       vert?: string
     }
+    background: {
+      frag?: string
+      vert?: string
+    }
   }
 }
 
@@ -69,15 +73,63 @@ void main() {
 
 const BasicShader = new ShaderMaterial(config)
 
+// Background plane shader configuration
+const backgroundConfig = {
+  uniforms: {
+    u_time: {
+      value: 0.0
+    },
+    u_resolution: {
+      value: new Vector2()
+    },
+    u_amp: {
+      value: 1.0
+    }
+  },
+  defines: {
+    PI: Math.PI,
+    HALF_PI: Math.PI * 0.5
+  },
+  side: DoubleSide,
+  wireframe: false,
+  vertexShader: `
+varying vec2 vUv;
+uniform float u_time;
+uniform float u_amp;
+
+void main() {
+  vUv = uv;
+  vec3 newPosition = position;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+}
+`,
+  fragmentShader: `
+varying vec2 vUv;
+uniform vec2 u_resolution;
+uniform float u_time;
+
+void main(){
+  vec2 st = vUv;
+  vec3 color = vec3(fract(st.y * 1000.)); // cyan color
+  gl_FragColor = vec4(mix(color, vec3(0.), 0.8), 1.);
+}
+`
+}
+
+const BackgroundShader = new ShaderMaterial(backgroundConfig)
+
 const Main: Component<{ box: { width: number; height: number }; estimates: NormalizedLandmark[] }> = ({ box, estimates }) => {
   const camera = useThree(t => t.camera)
   const { size } = useThree()
   const meshRef = useRef<Mesh<BufferGeometry, ShaderMaterial> | null>(null)
+  const backgroundMeshRef = useRef<Mesh<BufferGeometry, ShaderMaterial> | null>(null)
   const geoRef = useRef<BufferGeometry | null>(null)
 
   useEffect(() => {
     window.face = {}
+    window.background = {}
     
+    // Face mesh properties
     Object.defineProperty(window.face, 'frag', {
       get() {
         if(!meshRef.current) {
@@ -150,6 +202,79 @@ const Main: Component<{ box: { width: number; height: number }; estimates: Norma
       }
     })
 
+    // Background mesh properties
+    Object.defineProperty(window.background, 'frag', {
+      get() {
+        if(!backgroundMeshRef.current) {
+          console.error('backgroundMeshRef.current is not set')
+          return ''
+        }
+        return backgroundMeshRef.current?.material.fragmentShader
+      },
+      set(value: string) {
+        if(!backgroundMeshRef.current) {
+          console.error('backgroundMeshRef.current is not set')
+          return
+        }
+        // Create a new material with the updated fragment shader
+        const newMaterial = new ShaderMaterial({
+          ...backgroundConfig,
+          fragmentShader: value
+        })
+        
+        // Copy over any existing uniform values
+        if (backgroundMeshRef.current.material.uniforms) {
+          Object.keys(backgroundMeshRef.current.material.uniforms).forEach(key => {
+            if (newMaterial.uniforms[key] && backgroundMeshRef.current?.material.uniforms[key]) {
+              newMaterial.uniforms[key].value = backgroundMeshRef.current.material.uniforms[key].value
+            }
+          })
+        }
+        
+        // Dispose of the old material to prevent memory leaks
+        backgroundMeshRef.current.material.dispose()
+        
+        // Assign the new material
+        backgroundMeshRef.current.material = newMaterial
+      }
+    })
+
+    Object.defineProperty(window.background, 'vert', {
+      get() {
+        if(!backgroundMeshRef.current) {
+          console.error('backgroundMeshRef.current is not set')
+          return ''
+        }
+        return backgroundMeshRef.current?.material.vertexShader
+      },
+      set(value: string) {
+        if(!backgroundMeshRef.current) {
+          console.error('backgroundMeshRef.current is not set')
+          return
+        }
+        // Create a new material with the updated vertex shader
+        const newMaterial = new ShaderMaterial({
+          ...backgroundConfig,
+          vertexShader: value
+        })
+        
+        // Copy over any existing uniform values
+        if (backgroundMeshRef.current.material.uniforms) {
+          Object.keys(backgroundMeshRef.current.material.uniforms).forEach(key => {
+            if (newMaterial.uniforms[key] && backgroundMeshRef.current?.material.uniforms[key]) {
+              newMaterial.uniforms[key].value = backgroundMeshRef.current.material.uniforms[key].value
+            }
+          })
+        }
+        
+        // Dispose of the old material to prevent memory leaks
+        backgroundMeshRef.current.material.dispose()
+        
+        // Assign the new material
+        backgroundMeshRef.current.material = newMaterial
+      }
+    })
+
   }, [])
 
   useLayoutEffect(() => {
@@ -181,6 +306,7 @@ const Main: Component<{ box: { width: number; height: number }; estimates: Norma
       geoRef.current.setAttribute('position', new Float32BufferAttribute(vertices, 3))
       geoRef.current.setAttribute('uv', new Float32BufferAttribute(uvs, 2))
 
+      // Update face mesh uniforms
       if ('u_time' in meshRef.current.material.uniforms) {
         meshRef.current.material.uniforms['u_time'].value = performance.now() * 0.001
       }
@@ -191,6 +317,18 @@ const Main: Component<{ box: { width: number; height: number }; estimates: Norma
 
       meshRef.current.material.needsUpdate = true
       
+      // Update background mesh uniforms
+      if (backgroundMeshRef.current) {
+        if ('u_time' in backgroundMeshRef.current.material.uniforms) {
+          backgroundMeshRef.current.material.uniforms['u_time'].value = performance.now() * 0.001
+        }
+        
+        if ('u_resolution' in backgroundMeshRef.current.material.uniforms) {
+          backgroundMeshRef.current.material.uniforms['u_resolution'].value.set(size.width, size.height)
+        }
+
+        backgroundMeshRef.current.material.needsUpdate = true
+      }
     }
   }, [box.height, box.width, camera, estimates, size.width, size.height])
 
@@ -202,18 +340,18 @@ const Main: Component<{ box: { width: number; height: number }; estimates: Norma
         matrixWorldAutoUpdate={undefined}
         getObjectsByProperty={undefined}
       />
-      <GizmoHelper>
+      {/* <GizmoHelper>
         <GizmoViewport axisColors={['red', 'green', 'blue']} labelColor="black" />
-      </GizmoHelper>
+      </GizmoHelper> */}
       <OrbitControls />
       <mesh ref={meshRef} rotation={[0, 0, 0]}>
         <bufferGeometry attach="geometry" ref={geoRef} />
         <primitive object={BasicShader} attach="material" />
         {/* <meshBasicMaterial ref={matRef} attach={'material'} wireframe={false} color={0xffffff} side={DoubleSide} /> */}
       </mesh>
-      <mesh position={[0, 0, -10]}>
+      <mesh ref={backgroundMeshRef} position={[0, 0, -10]}>
         <boxBufferGeometry args={[box.width, box.height, 1]} />
-        <meshBasicMaterial wireframe={true} color={'cyan'} />
+        <primitive object={BackgroundShader} attach="material" />
       </mesh>
     </>
   )

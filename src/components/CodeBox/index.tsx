@@ -82,7 +82,41 @@ const defaultVert = `
   }
 `
 
-const defaultDoc = [`face.frag = \`${defaultFrag}\``, ``, `face.vert = \`${defaultVert}\``].join('\n')
+const defaultBackgroundFrag = `
+  varying vec2 vUv;
+  uniform vec2 u_resolution;
+  uniform float u_time;
+  
+  void main(){
+    vec2 st = vUv;
+    vec3 color = vec3(0., 1., 1.); // cyan color
+    gl_FragColor = vec4(color, 1.);
+  }
+`
+
+const defaultBackgroundVert = `
+  varying vec2 vUv;
+  uniform float u_time;
+  uniform float u_amp;
+  
+  void main() {
+    vUv = uv;
+    vec3 newPosition = position;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+  }
+`
+
+const defaultDoc = [
+  `// Face mesh shaders`,
+  `face.frag = \`${defaultFrag}\``,
+  ``,
+  `face.vert = \`${defaultVert}\``,
+  ``,
+  `// Background plane shaders`,
+  `background.frag = \`${defaultBackgroundFrag}\``,
+  ``,
+  `background.vert = \`${defaultBackgroundVert}\``
+].join('\n')
 
 // Custom theme: everything white except template literals
 const customWhiteTheme = EditorView.theme({

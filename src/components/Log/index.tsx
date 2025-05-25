@@ -58,7 +58,7 @@ const DevBar = () => {
                         OBJECT_VALUE_NULL_COLOR: 'rgb(127, 127, 127)',
                         OBJECT_VALUE_UNDEFINED_COLOR: 'rgb(127, 127, 127)',
                         OBJECT_VALUE_REGEXP_COLOR: 'rgb(233, 63, 59)',
-                        OBJECT_VALUE_STRING_COLOR: 'rgb(233, 63, 59)',
+                        OBJECT_VALUE_STRING_COLOR: 'rgb(255, 255, 255)',
                         OBJECT_VALUE_SYMBOL_COLOR: 'rgb(233, 63, 59)',
                         OBJECT_VALUE_NUMBER_COLOR: 'hsl(252, 100%, 75%)',
                         OBJECT_VALUE_BOOLEAN_COLOR: 'hsl(252, 100%, 75%)',
@@ -93,12 +93,12 @@ const DevBar = () => {
                       data={v}
                     />
                   </span>
-                  <span style={{opacity: 0.3}}>{entry.timestamp}</span>
+                  <span style={{opacity: 0.3, flex: '0 0 auto'}}>{entry.timestamp}</span>
                 </div>
               )
             })}
           </div>
-          <div className={styles['data']} style={{paddingLeft: '0.8rem'}}>
+          {/* <div className={styles['data']} style={{paddingLeft: '0.8rem'}}>
             <h1
               style={{
                 fontSize: 'inherit',
@@ -159,7 +159,7 @@ const DevBar = () => {
               }}
               data={estimates}
             />
-          </div>
+          </div> */}
         </div>
       ) : null}
     </>
