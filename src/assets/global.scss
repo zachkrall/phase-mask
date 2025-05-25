@@ -35,7 +35,7 @@ button, [role="button"] {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  
 }
 
 #canvas {
@@ -75,7 +75,7 @@ button, [role="button"] {
   flex-direction:column;
   flex-grow: 1;
   width: 100%;
-  overflow:auto;
+  overflow:hidden;
 
   --cursor-color: #fff;
   --selection-background:rgba(255,255,255,0.2);
@@ -90,6 +90,7 @@ button, [role="button"] {
     width:100%;
 
     background:rgba(0,0,0,0.3);
+    border-right: 1px solid rgba(255,255,255,0.2);
 
     padding:0.25rem;
   }
@@ -99,13 +100,16 @@ button, [role="button"] {
     top:50%;
     left: 100%;
     cursor: col-resize;
-
+    overflow:visible;
+    
     button {
+      border-radius: 99px;
       cursor: col-resize;
       font-size:0;
       width:5px;height:50px;
       transform:translate(-10px, -50%);
       transition:height ease 0.3s;
+      overflow: hidden;
     }
 
     &:hover {

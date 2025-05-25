@@ -55,22 +55,15 @@ void main() {
 }
 `,
   fragmentShader: `
-varying vec2 vUv;
-uniform vec2 u_resolution;
-uniform float u_time;
-void main(){
-  vec2 st = vUv;
-
-  // Create a more visible gradient - horizontal red to blue, vertical black to white
-  vec3 color = vec3(st.x, st.y, 1.0 - st.x);
-
-
-  float a = fract(st.y * 50.0);
-
-  color *= vec3(a);
-  
-  gl_FragColor = vec4(color, 1.0);
-}
+ varying vec2 vUv;
+  uniform vec2 u_resolution;
+  uniform float u_time;
+  void main(){
+    vec2 st = vUv;
+    st = fract(300. * st);
+    vec3 color = vec3(st.y, 0., 1.);
+    gl_FragColor = vec4(color, 1.);
+  }
 `
 }
 
@@ -205,7 +198,7 @@ const Main: Component<{ box: { width: number; height: number }; estimates: Norma
     <>
       <PerspectiveCamera
         makeDefault={true}
-        position={[0, 0, 500]}
+        position={[0, 0, 300]}
         matrixWorldAutoUpdate={undefined}
         getObjectsByProperty={undefined}
       />

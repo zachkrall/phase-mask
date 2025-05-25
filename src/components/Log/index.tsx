@@ -45,8 +45,8 @@ const DevBar = () => {
                   <span className={entry.state}>
                     <ObjectInspector
                       theme={{
-                        BASE_FONT_FAMILY: 'Menlo, monospace',
-                        BASE_FONT_SIZE: '16px',
+                        BASE_FONT_FAMILY: '"Fira Code", monospace',
+                        BASE_FONT_SIZE: '14px',
                         BASE_LINE_HEIGHT: 1.2,
 
                         BASE_BACKGROUND_COLOR: 'transparent',
@@ -77,8 +77,8 @@ const DevBar = () => {
                         ARROW_FONT_SIZE: '12px',
                         ARROW_ANIMATION_DURATION: '0',
 
-                        TREENODE_FONT_FAMILY: 'Menlo, monospace',
-                        TREENODE_FONT_SIZE: '16px',
+                        TREENODE_FONT_FAMILY: '"Fira Code", monospace',
+                        TREENODE_FONT_SIZE: '14px',
                         TREENODE_LINE_HEIGHT: '1.2',
                         TREENODE_PADDING_LEFT: '10px',
 
