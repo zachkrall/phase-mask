@@ -17,7 +17,14 @@ const CameraMenu = () => {
   const cameraVisible = useSelector(selectIsVisible(UIPane.CameraPreview))
 
   const devices = useMemo(() => {
-    return deviceList.filter(device => device.label !== '')
+    return deviceList.filter(device => device.label !== '').reduce<typeof deviceList>((acc, device) => {
+      // remove duplicates
+      if (acc.find(d => d.deviceId === device.deviceId)) {
+        return acc
+      }
+      acc.push(device)
+      return acc
+    }, [])
   }, [deviceList])
 
   return !cameraPermissionError ? (

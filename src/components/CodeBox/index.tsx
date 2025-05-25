@@ -19,6 +19,7 @@ import { HighlightStyle, tags } from '@codemirror/highlight'
 import { livecodeKeymap } from './KeyMapping'
 import { replEval } from '~/redux/repl'
 import { selectIsVisible, UIPane } from '~/redux/ui'
+import { backgroundConfig, config } from '../Renderer'
 
 // import {syntaxTree} from '@codemirror/language'
 
@@ -58,61 +59,19 @@ import { selectIsVisible, UIPane } from '~/redux/ui'
 //   return null
 // }
 
-const defaultFrag = `
-  varying vec2 vUv;
-  uniform vec2 u_resolution;
-  uniform float u_time;
-  void main(){
-    vec2 st = vUv;
-    st = fract(300. * st);
-    vec3 color = vec3(st.y, 0., 1.);
-    gl_FragColor = vec4(color, 1.);
-  }
-`
+const defaultFrag = config.fragmentShader
 
-const defaultVert = `
-  varying vec2 vUv;
-  uniform float u_time;
-  uniform float u_amp;
+const defaultVert = config.vertexShader
 
-  void main() {
-    vUv = uv;
-    vec3 newPosition = position + vec3(0., 0., sin(u_time + position.x)*u_amp);
-    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
-  }
-`
+const defaultBackgroundFrag = backgroundConfig.fragmentShader
 
-const defaultBackgroundFrag = `
-  varying vec2 vUv;
-  uniform vec2 u_resolution;
-  uniform float u_time;
-  
-  void main(){
-    vec2 st = vUv;
-    vec3 color = vec3(0., 1., 1.); // cyan color
-    gl_FragColor = vec4(color, 1.);
-  }
-`
-
-const defaultBackgroundVert = `
-  varying vec2 vUv;
-  uniform float u_time;
-  uniform float u_amp;
-  
-  void main() {
-    vUv = uv;
-    vec3 newPosition = position;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
-  }
-`
+const defaultBackgroundVert = backgroundConfig.vertexShader
 
 const defaultDoc = [
-  `// Face mesh shaders`,
   `face.frag = \`${defaultFrag}\``,
   ``,
   `face.vert = \`${defaultVert}\``,
   ``,
-  `// Background plane shaders`,
   `background.frag = \`${defaultBackgroundFrag}\``,
   ``,
   `background.vert = \`${defaultBackgroundVert}\``

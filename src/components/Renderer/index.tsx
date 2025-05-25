@@ -28,7 +28,7 @@ declare global {
   }
 }
 
-const config = {
+export const config = {
   uniforms: {
     u_time: {
       value: 0.0
@@ -48,24 +48,23 @@ const config = {
   side: DoubleSide,
   wireframe: false,
   vertexShader: `
-varying vec2 vUv;
-uniform float u_time;
-uniform float u_amp;
-
-void main() {
-  vUv = uv;
-  vec3 newPosition = position + vec3(0., 0., sin(u_time + position.x)*u_amp);
-  gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
-}
+  varying vec2 vUv;
+  uniform float u_time;
+  uniform float u_amp;
+  void main() {
+    vUv = uv;
+    vec3 newPosition = position + vec3(0., 0., sin(u_time + position.x)*u_amp);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+  }
 `,
   fragmentShader: `
- varying vec2 vUv;
+  varying vec2 vUv;
   uniform vec2 u_resolution;
   uniform float u_time;
   void main(){
     vec2 st = vUv;
-    st = fract(300. * st);
-    vec3 color = vec3(st.y, 0., 1.);
+    st.y = fract(2. * st.y + u_time);
+    vec3 color = vec3(1.0-st.y-sin(u_time), 1.0-st.x, u_time * 100.);
     gl_FragColor = vec4(color, 1.);
   }
 `
@@ -74,7 +73,7 @@ void main() {
 const BasicShader = new ShaderMaterial(config)
 
 // Background plane shader configuration
-const backgroundConfig = {
+export const backgroundConfig = {
   uniforms: {
     u_time: {
       value: 0.0
@@ -93,26 +92,24 @@ const backgroundConfig = {
   side: DoubleSide,
   wireframe: false,
   vertexShader: `
-varying vec2 vUv;
-uniform float u_time;
-uniform float u_amp;
-
-void main() {
-  vUv = uv;
-  vec3 newPosition = position;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
-}
+  varying vec2 vUv;
+  uniform float u_time;
+  uniform float u_amp;
+  void main() {
+    vUv = uv;
+    vec3 newPosition = position;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+  }
 `,
   fragmentShader: `
-varying vec2 vUv;
-uniform vec2 u_resolution;
-uniform float u_time;
-
-void main(){
-  vec2 st = vUv;
-  vec3 color = vec3(fract(st.y * 1000.)); // cyan color
-  gl_FragColor = vec4(mix(color, vec3(0.), 0.8), 1.);
-}
+  varying vec2 vUv;
+  uniform vec2 u_resolution;
+  uniform float u_time;
+  void main(){
+    vec2 st = vUv;
+    vec3 color = vec3(fract(st.y * 1000. - u_time * 0.5));
+    gl_FragColor = vec4(mix(color, vec3(0.), 0.8), 1.);
+  }
 `
 }
 
@@ -124,6 +121,7 @@ const Main: Component<{ box: { width: number; height: number }; estimates: Norma
   const meshRef = useRef<Mesh<BufferGeometry, ShaderMaterial> | null>(null)
   const backgroundMeshRef = useRef<Mesh<BufferGeometry, ShaderMaterial> | null>(null)
   const geoRef = useRef<BufferGeometry | null>(null)
+  const geoRef2 = useRef<BufferGeometry | null>(null)
 
   useEffect(() => {
     window.face = {}
@@ -279,7 +277,7 @@ const Main: Component<{ box: { width: number; height: number }; estimates: Norma
 
   useLayoutEffect(() => {
     const face = estimates
-    if (geoRef.current && face && camera && meshRef.current) {
+    if (geoRef.current && face && camera && meshRef.current && geoRef2.current) {
       const vertices: number[] = face.reduce<number[]>((state, input) => {
         const { x, y, z } = input
         state.push(box.width * 0.5 - x * box.width, box.height * 0.5 - y * box.height, 0)
@@ -305,6 +303,10 @@ const Main: Component<{ box: { width: number; height: number }; estimates: Norma
       geoRef.current.setIndex(indices)
       geoRef.current.setAttribute('position', new Float32BufferAttribute(vertices, 3))
       geoRef.current.setAttribute('uv', new Float32BufferAttribute(uvs, 2))
+
+      geoRef2.current.setIndex(indices)
+      geoRef2.current.setAttribute('position', new Float32BufferAttribute(vertices, 3))
+      geoRef2.current.setAttribute('uv', new Float32BufferAttribute(uvs, 2))
 
       // Update face mesh uniforms
       if ('u_time' in meshRef.current.material.uniforms) {
@@ -344,10 +346,13 @@ const Main: Component<{ box: { width: number; height: number }; estimates: Norma
         <GizmoViewport axisColors={['red', 'green', 'blue']} labelColor="black" />
       </GizmoHelper> */}
       <OrbitControls />
-      <mesh ref={meshRef} rotation={[0, 0, 0]}>
+      <mesh ref={meshRef} rotation={[0, 0, 0]} position={[0, 30, 0]}>
         <bufferGeometry attach="geometry" ref={geoRef} />
         <primitive object={BasicShader} attach="material" />
-        {/* <meshBasicMaterial ref={matRef} attach={'material'} wireframe={false} color={0xffffff} side={DoubleSide} /> */}
+      </mesh>
+      <mesh rotation={[0, 0, 0]} position={[0, 30, 1]}>
+        <bufferGeometry attach="geometry" ref={geoRef2} />
+        <meshBasicMaterial  attach={'material'} wireframe={true} color={0x000000} transparent={true} opacity={0.2}/>
       </mesh>
       <mesh ref={backgroundMeshRef} position={[0, 0, -10]}>
         <boxBufferGeometry args={[box.width, box.height, 1]} />
