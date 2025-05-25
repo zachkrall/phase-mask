@@ -11,12 +11,14 @@ export type UIState = {
   showEditor: boolean
   showLog: boolean
   showCameraPreview: boolean
+  showWelcomeDialog: boolean
 }
 
 const initialState: UIState = {
   showEditor: true,
-  showLog: true,
+  showLog: false,
   showCameraPreview: true,
+  showWelcomeDialog: true,
 }
 
 const uiSlice = createSlice({
@@ -32,11 +34,18 @@ const uiSlice = createSlice({
     toggleUIPane(state, action: PayloadAction<UIPane>) {
       state[action.payload] = !state[action.payload]
     },
+    showWelcomeDialog(state) {
+      state.showWelcomeDialog = true
+    },
+    hideWelcomeDialog(state) {
+      state.showWelcomeDialog = false
+    },
   },
 })
 
-export const {showUIPane, hideUIPane, toggleUIPane} = uiSlice.actions
+export const {showUIPane, hideUIPane, toggleUIPane, showWelcomeDialog, hideWelcomeDialog} = uiSlice.actions
 
 export const selectIsVisible = (el: UIPane) => (state: RootState) => state.ui[el]
+export const selectShowWelcomeDialog = (state: RootState) => state.ui.showWelcomeDialog
 
 export default uiSlice.reducer

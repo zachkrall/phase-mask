@@ -98,7 +98,7 @@ const DevBar = () => {
               )
             })}
           </div>
-          {/* <div className={styles['data']} style={{paddingLeft: '0.8rem'}}>
+          <div className={styles['data']} style={{paddingLeft: '0.8rem'}}>
             <h1
               style={{
                 fontSize: 'inherit',
@@ -159,7 +159,7 @@ const DevBar = () => {
               }}
               data={estimates}
             />
-          </div> */}
+          </div>
         </div>
       ) : null}
     </>
