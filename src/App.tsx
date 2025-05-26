@@ -22,8 +22,10 @@ const Main = () => {
   const showWelcomeDialog = useSelector(selectShowWelcomeDialog)
 
   useEffect(() => {
-    dispatch(requestPermissions())
-  }, [dispatch])
+    if(showWelcomeDialog === false){
+      dispatch(requestPermissions())
+    }
+  }, [showWelcomeDialog, dispatch])
 
   return (
     <>
