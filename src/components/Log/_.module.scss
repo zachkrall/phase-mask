@@ -1,14 +1,12 @@
 .log{
   flex-basis: auto;
-  flex-grow: 1;
+  flex-grow: 0;
   flex-shrink: 0;
 
-  max-height: 300px;
-  height:auto;
-  background:rgba(0,0,0,0.7);
-  border-top:1px solid #666;
+  height: 300px;
+  background:rgba(0,0,0,0.3);
+  border-top:1px solid rgba(255,255,255,0.2);
   width:100%;
-  padding:0.25rem;
 
   overflow:auto;
 
@@ -19,13 +17,10 @@
   height: 100%;
   flex: 1 1 50%;
   overflow:auto;
-  border-right:1px solid #666;
-
-  padding: 0.25rem;
+  border-right:1px solid rgba(255,255,255,0.2);
 }
 
 .entry {
-  padding: 0.25rem;
   display:flex;
   gap: 10px;
 

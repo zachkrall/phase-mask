@@ -46,7 +46,7 @@ const tensorflowSlice = createSlice({
     },
     updateSpeed(state, action: PayloadAction<number>) {
       state.speed.unshift(action.payload)
-      state.speed = state.speed.slice(0, 50)
+      state.speed = state.speed.slice(0, 100)
     },
     updateEstimate(state, action: PayloadAction<Array<NormalizedLandmark>>) {
       state.estimates = action.payload

@@ -338,7 +338,7 @@ const Main: Component<{ box: { width: number; height: number }; estimates: Norma
     <>
       <PerspectiveCamera
         makeDefault={true}
-        position={[0, 0, 300]}
+        position={[0, 0, 200]}
         matrixWorldAutoUpdate={undefined}
         getObjectsByProperty={undefined}
       />

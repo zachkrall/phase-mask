@@ -1,14 +1,14 @@
-import {motion} from 'framer-motion'
-import {FC, MutableRefObject, useCallback, useEffect, useRef, useState} from 'react'
-import {useSelector} from 'react-redux'
-import {requestCameraPermissions} from '~/lib/camera'
-import {selectActiveDevice} from '~/redux/camera'
-import {selectTFSpeed} from '~/redux/tensorflow'
-import {selectIsVisible, UIPane} from '~/redux/ui'
+import { motion } from 'framer-motion'
+import { FC, MutableRefObject, useCallback, useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { requestCameraPermissions } from '~/lib/camera'
+import { selectActiveDevice } from '~/redux/camera'
+import { selectTFSpeed } from '~/redux/tensorflow'
+import { selectIsVisible, UIPane } from '~/redux/ui'
 
 import styles from './_.module.scss'
 
-const CameraPreview: FC<{appRef: MutableRefObject<HTMLDivElement | null>}> = ({appRef}) => {
+const CameraPreview: FC<{ appRef: MutableRefObject<HTMLDivElement | null> }> = ({ appRef }) => {
   const [error, setError] = useState<string | null>(null)
   const pipRef = useRef<HTMLDivElement | null>(null)
   const activeDevice = useSelector(selectActiveDevice)
@@ -39,7 +39,7 @@ const CameraPreview: FC<{appRef: MutableRefObject<HTMLDivElement | null>}> = ({a
 
   const updateCamera = useCallback(
     async (el: HTMLVideoElement) => {
-      const [stream, streamErr] = await requestCameraPermissions({id: activeDevice.deviceId})
+      const [stream, streamErr] = await requestCameraPermissions({ id: activeDevice.deviceId })
 
       if (streamErr !== null) {
         return
@@ -98,32 +98,52 @@ const CameraPreview: FC<{appRef: MutableRefObject<HTMLDivElement | null>}> = ({a
           )}
 
           {speed.length > 0 && (
-            <>
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '2rem',
+                right: '2rem',
+                width: '100px',
+                padding: '0px',
+                backgroundColor: 'hsla(43,100%,10%,0.5)',
+                backdropFilter: 'blur(2px)',
+                borderRadius: '4px',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              {/* <div
+                style={{
+                  fontSize: '10px',
+                  fontFamily: '"Fire Code", monospace',
+                  letterSpacing: '0px',
+                  color: 'hsla(180, 100%, 50%, 1.0)',
+                  padding: '5px',
+                }}
+              >
+                Latency
+              </div> */}
               <div
                 style={{
-                  position: 'absolute',
-                  bottom: '2rem',
-                  right: '2rem',
-                  marginLeft: '0.5rem',
-                  height: '50px',
-                  background: 'hsla(43,20%,20%,0.6)',
-                  border: '1px solid hsla(43,100%,50%,0.2)',
+                  height: '30px',
+                  background: 'hsla(43,100%,30%,0.0)',
+                  border: '1px solid hsla(43,100%,50%,0.0)',
+                  borderRadius: '4px',
                   display: 'inline-flex',
                   alignItems: 'flex-end',
                   flexDirection: 'row-reverse',
-                  borderRadius: '2px',
-                  width: '50px',
+                  width: '100%',
                   overflow: 'hidden',
                 }}
               >
                 {speed.map((s, i) => (
                   <div
                     key={`${s}--${i}`}
-                    style={{width: '1px', background: 'hsla(43,100%,50%,1.0)', height: `${s / 30}rem`}}
+                    style={{ width: '1px', background: 'hsla(43,100%,50%,1.0)', height: `${s / 30}rem` }}
                   ></div>
                 ))}
               </div>
-            </>
+            </div>
           )}
         </motion.div>
       ) : null}
